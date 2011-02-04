@@ -3,7 +3,7 @@ var consumer_key = process.argv[2]
   , consumer_secret = process.argv[3];
 
 if (consumer_key == undefined || consumer_secret == undefined) {
-  console.log("Usage: node app.js <dropbox key> <dropbox secret>");
+  console.log("Usage: node app.js <dropbox key> <dropbox secret>\n (You can get a dropbox key / secret at http://www.dropbox.com/developers/)");
   process.exit(1);
 }
 
@@ -14,8 +14,10 @@ var sys = require('sys')
 
 // Create and configure an Express server.
 var app = express.createServer();
+var pub = __dirname + '/public';
 app.configure(function () {
-  app.use(express.staticProvider(__dirname + '/public'))
+  app.use(express.staticProvider(pub))
+  , app.use(express.compiler({ src: pub, enable: ['sass'] }))
   , app.use(express.logger())
   , app.use(express.bodyDecoder())
   , app.use(express.cookieDecoder())
